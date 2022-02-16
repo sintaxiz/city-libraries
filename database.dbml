@@ -1,0 +1,91 @@
+
+// LIBRARY
+
+Table library {
+  id int [pk, increment]
+}
+
+Table room {
+  id int [pk]
+  library_id int [pk, ref: > library.id]
+}
+
+// READERS
+
+Table reader_category {
+  id int [pk]
+  name varchar
+}
+
+Table reader {
+  id int [pk, increment]
+  name varchar
+  category_id int [ref: > reader_category.id]
+}
+
+Table schoolboy {
+  id int [pk]
+  reader_category_id 2
+  key foreign [ref: > reader.id]
+  school int
+  grade int
+}
+
+Table student {
+  id int [pk]
+  reader_category_id int
+  key foreign [ref: > reader.id]
+  university varchar
+}
+
+Table reader_library {
+  reader_id int [pk, ref: > reader.id]
+  library_id int [pk, ref: > library.id]
+}
+
+// LITERATURE
+
+// Произведения авторов, составляющие библиотечный фонд, также можно разделить на различные категории, 
+// характеризующиеся собственным набором атрибутов: учебники, повести, романы, статьи, стихи, диссертации, 
+// рефераты, тезисы докладов и т.д.
+Table literature {
+  id int [pk]
+  title varchar
+}
+
+// Библиотечный фонд (книги, журналы, газеты, сборники статей, сборники стихов, диссертации, рефераты, сборники 
+// докладов и тезисов докладов и пр.) 
+Table publication {
+  id int [pk]
+  // номер зала, стеллажа, полки
+  room_id int [ref: > room.id]
+  rack_id int
+  bookshelf_id int
+}
+
+Table publication_literature {
+  id int [pk]
+  publication_id int [ref: > publication.id]
+  literature_id int [ref: > literature.id]
+}
+
+// WORKERS
+
+Table room_worker {
+  id int [pk]
+  room_id int [ref: > room.id]
+  worker_id int [ref: > worker.id] 
+}
+
+Table worker {
+  id int [pk]
+  name varchar
+}
+
+Table borrowing {
+  id int [pk]
+  reader_id int [ref: > reader.id]
+  publication_id int [ref: > publication.id]
+  worker_id int [ref: > worker.id]
+  date timestamp
+}
