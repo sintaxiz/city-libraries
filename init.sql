@@ -9,7 +9,7 @@ create table library
 create table room
 (
     id         integer primary key,
-    library_id integer references library
+    library_id integer not null references library
 );
 
 create table rack
@@ -41,15 +41,13 @@ create table reader
 (
     id          integer primary key,
     category_id integer references reader_category,
-    unique (id, category_id),
     name        text not null
 );
 
 create table schoolboy
 (
     id          integer primary key,
-    category_id integer default 1,
-    foreign key (id, category_id) references reader (id, category_id),
+    reader_id   integer references reader,
     school      text,
     grade       text
 );
@@ -57,8 +55,7 @@ create table schoolboy
 create table student
 (
     id          integer primary key,
-    category_id integer default 2,
-    foreign key (id, category_id) references reader (id, category_id),
+    reader_id   integer references reader,
     university  text
 );
 
@@ -66,7 +63,7 @@ create table reader_library
 (
     reader_id  integer references reader,
     library_id integer references library,
-    unique (reader_id, library_id)
+    primary key (reader_id, library_id)
 );
 
 -- LITERATURE --
@@ -94,16 +91,14 @@ create table literature
 create table fiction
 (
     id          integer primary key,
-    category_id integer default 1,
-    foreign key (id, category_id) references literature (id, category_id),
+    literature_id integer references literature not null ,
     translation text
 );
 
 create table textbook
 (
     id          integer primary key,
-    category_id integer default 2,
-    foreign key (id, category_id) references literature (id, category_id),
+    literature_id integer references literature not null ,
     field       text
 );
 
@@ -118,9 +113,9 @@ create table publication
 
 create table publication_literature
 (
-    id             integer primary key,
-    publication_id integer references publication,
-    literature_id  integer references literature
+    publication_id integer references publication not null,
+    literature_id  integer references literature not null ,
+    primary key (publication_id, literature_id)
 );
 
 -- WORKERS --
@@ -133,9 +128,9 @@ create table worker
 
 create table room_worker
 (
-    id        integer primary key,
-    room_id   integer references room,
-    worker_id integer references worker
+    room_id   integer references room not null ,
+    worker_id integer references worker not null,
+    primary key (room_id, worker_id)
 );
 
 -- BORROWING --
@@ -148,16 +143,16 @@ create table rule
 
 create table publication_rule
 (
-    id             integer primary key,
-    publication_id integer references publication,
-    rule_id        integer references rule
+    publication_id integer references publication not null,
+    rule_id        integer references rule not null,
+    primary key  (publication_id, rule_id)
 );
 
 create table borrowing
 (
     id             integer primary key,
-    reader_id      integer references reader,
-    publication_id integer references publication,
-    worker_id      integer references worker,
+    reader_id      integer references reader not null,
+    publication_id integer references publication not null,
+    worker_id      integer references worker not null,
     date           timestamp
 );

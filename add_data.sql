@@ -67,14 +67,14 @@ values (1, 1, 'Портрет Дориана Грея', 'Оскар Уайльд
        (6, NULL, 'Что это было', 'Хармс Даниил', '1940'),
        (7, 2, 'Введение в системы баз данных', 'Дейт Крис Дж.', '1975');
 
-insert into textbook(id, field)
-values (3, 'Информационные технологии, операционные системы'),
-       (7, 'Сетевые технологии');
+insert into textbook(id, literature_id, field)
+values (1, 3, 'Информационные технологии, операционные системы'),
+       (2, 7, 'Сетевые технологии');
 
-insert into fiction(id, translation)
-values (1, NULL),
-       (2, NULL),
-       (4, 'Заяицкий С.С.');
+insert into fiction(id, literature_id, translation)
+values (1, 1, NULL),
+       (2, 2, NULL),
+       (3, 4, 'Заяицкий С.С.');
 
 
 -- PUBLICATIONS --
@@ -85,12 +85,12 @@ values (1, 1, 'книга'),
        (4, 4, 'книга'),
        (5, 5, 'книга');
 
-insert into publication_literature(id, publication_id, literature_id)
-values (1, 1, 1),
-       (2, 2, 2),
-       (3, 3, 3),
-       (4, 4, 4),
-       (5, 5, 5);
+insert into publication_literature(publication_id, literature_id)
+values (1, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4),
+       (5, 5);
 
 -- WORKERS --
 
@@ -101,12 +101,12 @@ values (1, 'Литвинова Галина Ивановна'),
        (4, 'Новосельева Валентина Ненельевна'),
        (5, 'Усенко Анатолий Романович');
 
-insert into room_worker (id, room_id, worker_id)
-values (1, 1, 1),
-       (2, 2, 2),
-       (3, 3, 3),
-       (4, 4, 4),
-       (5, 5, 5);
+insert into room_worker (room_id, worker_id)
+values (1, 1),
+       (1, 3),
+       (3, 2),
+       (5, 4),
+       (2, 5);
 
 -- BORROWING --
 
@@ -114,9 +114,9 @@ insert into rule(id, rule_text)
 values (1, 'Выдача только до недели'),
        (2, 'Можно читать только в читальном зале');
 
-insert into publication_rule(id, publication_id, rule_id)
-values (1, 1, 1),
-       (2, 2, 2);
+insert into publication_rule(publication_id, rule_id)
+values (1, 1),
+       (2, 2);
 
 insert into borrowing(id, reader_id, publication_id, worker_id, date)
 values (1, 2, 1, 3, '2022-03-16 14:39:23'),
