@@ -46,17 +46,17 @@ create table reader
 
 create table schoolboy
 (
-    id          integer primary key,
-    reader_id   integer references reader,
-    school      text,
-    grade       text
+    id        integer primary key,
+    reader_id integer references reader,
+    school    text,
+    grade     text
 );
 
 create table student
 (
-    id          integer primary key,
-    reader_id   integer references reader,
-    university  text
+    id         integer primary key,
+    reader_id  integer references reader,
+    university text
 );
 
 create table reader_library
@@ -90,16 +90,16 @@ create table literature
 
 create table fiction
 (
-    id          integer primary key,
-    literature_id integer references literature not null ,
-    translation text
+    id            integer primary key,
+    literature_id integer references literature not null,
+    translation   text
 );
 
 create table textbook
 (
-    id          integer primary key,
-    literature_id integer references literature not null ,
-    field       text
+    id            integer primary key,
+    literature_id integer references literature not null,
+    field         text
 );
 
 -- PUBLICATIONS --
@@ -108,13 +108,14 @@ create table publication
 (
     id           integer primary key,
     bookshelf_id integer,
+    name         text not null,
     type         text
 );
 
 create table publication_literature
 (
     publication_id integer references publication not null,
-    literature_id  integer references literature not null ,
+    literature_id  integer references literature  not null,
     primary key (publication_id, literature_id)
 );
 
@@ -128,7 +129,7 @@ create table worker
 
 create table room_worker
 (
-    room_id   integer references room not null ,
+    room_id   integer references room   not null,
     worker_id integer references worker not null,
     primary key (room_id, worker_id)
 );
@@ -144,15 +145,15 @@ create table rule
 create table publication_rule
 (
     publication_id integer references publication not null,
-    rule_id        integer references rule not null,
-    primary key  (publication_id, rule_id)
+    rule_id        integer references rule        not null,
+    primary key (publication_id, rule_id)
 );
 
 create table borrowing
 (
     id             integer primary key,
-    reader_id      integer references reader not null,
+    reader_id      integer references reader      not null,
     publication_id integer references publication not null,
-    worker_id      integer references worker not null,
+    worker_id      integer references worker      not null,
     date           timestamp
 );
