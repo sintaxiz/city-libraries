@@ -155,5 +155,6 @@ create table borrowing
     reader_id      integer references reader      not null,
     publication_id integer references publication not null,
     worker_id      integer references worker      not null,
+    library_id     integer references library     not null,
     date           timestamp
 );

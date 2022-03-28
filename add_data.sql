@@ -55,7 +55,6 @@ values (1, 1),
        (5, 3),
        (6, 5);
 
-
 -- LITERATURE --
 
 insert into literature(id, category_id, title, author, year)
@@ -120,11 +119,11 @@ insert into publication_rule(publication_id, rule_id)
 values (1, 1),
        (2, 2);
 
-insert into borrowing(id, reader_id, publication_id, worker_id, date)
-values (1, 2, 1, 3, '2022-03-16 14:39:23'),
-       (2, 2, 2, 3, '2022-03-14 11:39:53'),
-       (3, 4, 5, 4, '2022-02-01 10:55:16'),
-       (4, 1, 4, 1, '2022-03-04 14:30:06'),
-       (5, 5, 3, 5, '2022-03-01 15:39:12'),
-       (6, 1, 6, 1, '2022-03-21 15:04:56');
+insert into borrowing(id, reader_id, publication_id, worker_id,library_id, date)
+values (1, 2, 1, 3, 5, '2022-03-16 14:39:23'),
+       (2, 2, 2, 3, 5, '2022-03-14 11:39:53'),
+       (3, 4, 5, 4, 4, '2022-02-01 10:55:16'),
+       (4, 1, 4, 1, 1, '2022-03-04 14:30:06'),
+       (5, 5, 3, 5, 3, '2022-03-01 15:39:12'),
+       (6, 1, 6, 1, 2, '2022-03-21 15:04:56');
 
