@@ -1,3 +1,15 @@
+create view borrowings_view as
+select b.date as date, l.name as library, w.name as worker,
+       r.name as reader, p.name as book
+from borrowing b
+    inner join publication p on p.id = b.publication_id
+    inner join library l on l.id = b.library_id
+    inner join worker w on w.id = b.worker_id
+    inner join reader r on r.id = b.reader_id
+order by date;
+
+select * from borrowings_view;
+
 /*  1.  Получить список читателей с заданными характеристиками:
         студентов указанного учебно-го заведения, факультета,
         научных работников по определенной тематике и т.д. */
