@@ -1,3 +1,6 @@
+DROP DATABASE IF EXISTS city_libraries;
+create database city_libraries with encoding 'UTF8';
+
 -- LIBRARY --
 create table library
 (
@@ -109,7 +112,9 @@ create table publication
     id           integer primary key,
     bookshelf_id integer,
     name         text not null,
-    type         text
+    type         text,
+    receipt_date timestamp,
+    throw_date   timestamp
 );
 
 create table publication_literature
@@ -156,5 +161,7 @@ create table borrowing
     publication_id integer references publication not null,
     worker_id      integer references worker      not null,
     library_id     integer references library     not null,
-    date           timestamp
+    take_date      timestamp,
+    return_date    timestamp,
+    return_term    integer
 );
