@@ -1,4 +1,4 @@
-package ru.nsu.ccfit.universityis.backend;
+package ru.nsu.ccfit.citylibraries.backend;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
