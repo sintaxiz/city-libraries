@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS city_libraries;
-create database city_libraries with encoding 'UTF8';
+create database city_libraries;
 
 -- LIBRARY --
 create table library

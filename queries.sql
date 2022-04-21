@@ -30,7 +30,7 @@ from reader
          inner join student s on reader.id = s.id;
 
 /* 2. указанное произведение (literature) -> список читателей */
-select r.name
+select r.name, b.take_date, b.return_date
 from borrowing b
          inner join publication p on p.id = b.publication_id
          inner join publication_literature pl on p.id = pl.publication_id
@@ -46,7 +46,7 @@ from borrowing b
 
 /* 4. Получить перечень читателей, которые в течение указанного промежутка времени получа-ли издание
    с некоторым произведением, и название этого издания. */
-select r.name as reader, b.take_date as date, p.name as publication
+select r.name as reader
 from borrowing b
          inner join reader r on r.id = b.reader_id and
                                 b.take_date BETWEEN '01-01-2021' and '01-01-2023'
@@ -117,9 +117,10 @@ group by r.name;
 
 /*  11.	Получить перечень указанной литературы, которая поступила (была списана) в
    течение некоторого периода. */
-select l.title, p.receipt_date from (select * from publication p where p.receipt_date between '01-01-2021' and '01-01-2022') p
-    inner join publication_literature pl on p.id = pl.publication_id
-    inner join literature l on l.id = pl.literature_id;
+select l.title, p.receipt_date
+from (select * from publication p where p.receipt_date between '01-01-2021' and '01-01-2022') p
+         inner join publication_literature pl on p.id = pl.publication_id
+         inner join literature l on l.id = pl.literature_id;
 
 /* 12.	Выдать список библиотекарей, работающих
    в указанном читальном зале некоторой биб-лиотеки. */
@@ -129,14 +130,13 @@ from library l
          inner join room_worker rw on r.id = rw.room_id
          inner join worker w on rw.worker_id = w.id;
 
-/* todo: 13.	Получить список читателей, не посещавших
+/*  13.	Получить список читателей, не посещавших
    библиотеку в течение указанного времени. */
 select r.name
-from borrowing b
-         inner join reader r on r.id = b.reader_id and
-                                not ((b.take_date between '01-01-2021' and '01-01-2021')
-                                    or (b.return_date between '01-01-2021' and '01-01-2021'))
-group by r.name;
+from reader r
+where not exists(select * from borrowing b where r.id = b.reader_id and
+                                            ((b.take_date between '01-01-2021' and '01-01-2023')
+                                               or (b.return_date between '01-01-2021' and '01-01-2023')));
 
 /* 14.	Получить список инвентарных номеров и названий из библиотечного фонда,
    в которых со-держится указанное произведение. */
@@ -150,14 +150,15 @@ from literature l
 select l.title, p.name, p.id
 from literature l
          inner join publication_literature pl on l.id = pl.literature_id
-                                             and l.author = 'Фёдор Достоевский'
+    and l.author = 'Фёдор Достоевский'
          inner join publication p on pl.publication_id = p.id;
 
 /* 16.	Получить список самых популярных произведений. */
-select l.title, count(*) from borrowing
-    inner join publication p on p.id = borrowing.publication_id
-    inner join publication_literature pl on p.id = pl.publication_id
-    inner join literature l on l.id = pl.literature_id
-    group by l.id
-    order by count(*) desc
-    limit 3;
+select l.title, count(*)
+from borrowing
+         inner join publication p on p.id = borrowing.publication_id
+         inner join publication_literature pl on p.id = pl.publication_id
+         inner join literature l on l.id = pl.literature_id
+group by l.id
+order by count(*) desc
+limit 3;
