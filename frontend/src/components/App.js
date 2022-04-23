@@ -1,13 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
 import Libraries from './Libraries';
 
 function App() {
-  return (
-    <div className="App">
-      <Libraries> </Libraries>
-    </div>
-  );
+    function showLibraries() {
+    }
+
+    return (
+        <div className="App">
+            <h1>Library Fond</h1>
+            <button onClick={showLibraries}>Libraries</button>
+            <button>Readers</button>
+            <button>Publications</button>
+            <button>Literature</button>
+            <Libraries/>
+        </div>
+    );
 }
 
 export default App;
