@@ -1,19 +1,27 @@
 import './App.css';
-import Libraries from './Libraries';
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import Libraries from '../pages/Libraries';
+import Readers from "../pages/Readers";
+import Publications from "../pages/Publications";
+import Literature from "../pages/Literature";
 
 function App() {
-    function showLibraries() {
-    }
-
     return (
-        <div className="App">
+        <BrowserRouter>
             <h1>Library Fond</h1>
-            <button onClick={showLibraries}>Libraries</button>
-            <button>Readers</button>
-            <button>Publications</button>
-            <button>Literature</button>
-            <Libraries/>
-        </div>
+            <Link to="/libraries">Libraries</Link>
+            <Link to="/readers">Readers</Link>
+            <Link to="/publications">Publications</Link>
+            <Link to="/literature">Literature</Link>
+
+            <Routes>
+                <Route path="/libraries" element={<Libraries/>}/>
+                <Route path="/readers" element={<Readers/>}/>
+                <Route path="/publications" element={<Publications/>}/>
+                <Route path="/literature" element={<Literature/>}/>
+            </Routes>
+
+        </BrowserRouter>
     );
 }
 
