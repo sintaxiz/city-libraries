@@ -2,7 +2,6 @@ package ru.nsu.ccfit.citylibraries.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.nsu.ccfit.citylibraries.backend.entities.Literature;
 import ru.nsu.ccfit.citylibraries.backend.entities.Publication;
 import ru.nsu.ccfit.citylibraries.backend.repositories.PublicationRepository;
 

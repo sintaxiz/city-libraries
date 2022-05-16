@@ -1,9 +1,28 @@
 package ru.nsu.ccfit.citylibraries.backend.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import ru.nsu.ccfit.citylibraries.backend.dto.ReaderBorrowingInfo;
 import ru.nsu.ccfit.citylibraries.backend.entities.Reader;
+
+import java.util.List;
 
 @Repository
 public interface ReaderRepository extends JpaRepository<Reader, Integer> {
+    // 2. Выдать перечень читателей, на руках у которых находится указанное произведение.
+
+    @Query(nativeQuery = true, value =
+            "SELECT * from find_readers_with_literature(CAST(:literature AS VARCHAR))")
+    List<ReaderBorrowingInfo> getReadersWithLiterature(String literature);
+
+
+    @Query(nativeQuery = true, value = "SELECT * from find_readers_with_literature(" +
+            "CAST(:literature AS VARCHAR)," +
+            "CAST(:borrow_date AS TIMESTAMP)," +
+            "CAST(:return_date AS TIMESTAMP))")
+    List<ReaderBorrowingInfo> getReadersWithLiterature(@Param("literature") String literature,
+                                                       @Param("borrow_date") String borrowDate,
+                                                       @Param("return_date") String returnDate);
 }
