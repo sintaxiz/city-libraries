@@ -6,9 +6,11 @@ import Publications from "../pages/Publications";
 import Literature from "../pages/Literature";
 import SideNavigation from "./SideNavigation";
 
+import { Grommet } from 'grommet';
+
 function App() {
     return (
-        <div className="App">
+        <Grommet className="App" plain>
             <BrowserRouter>
                 <SideNavigation/>
                 <Routes>
@@ -19,7 +21,7 @@ function App() {
                 </Routes>
 
             </BrowserRouter>
-        </div>
+        </Grommet>
     );
 }
 

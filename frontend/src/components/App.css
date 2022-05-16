@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  margin-left: 160px; /* Same as the width of the sidenav */
+  margin-left: 190px; /* Same as the width of the sidenav */
   padding: 0px 10px;
 
 }
@@ -33,7 +33,7 @@
 
 .sidenav {
   height: 100%;
-  width: 160px;
+  width: 190px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -47,14 +47,15 @@
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
+  color: #ffffff;
   display: block;
 }
+
 .sidenav h1 {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
-  color: #e2e2e2;
+  color: #ffd60a;
   display: block;
 }
 

@@ -1,7 +1,9 @@
+import * as React from "react";
+
 export default function Publications(props) {
     return (
         <div>
-            publications
+            <h1>Publications</h1>
         </div>
     )
 }

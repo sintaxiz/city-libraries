@@ -12,11 +12,13 @@ export default function Literature(props) {
             })
     }
 
-    React.useEffect(() => {getLiterature()}, []);
+    React.useEffect(() => {
+        getLiterature()
+    }, []);
 
     const data = React.useMemo(() => literature, [literature])
     const columns = React.useMemo(
-        ()=>[
+        () => [
             {
                 Header: 'name',
                 accessor: '',
@@ -27,7 +29,7 @@ export default function Literature(props) {
 
     return (
         <div>
-                literature
+            <h1>Literature</h1>
         </div>
     )
 }

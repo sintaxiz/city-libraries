@@ -25,6 +25,7 @@ export default function Libraries(props) {
 
     return (
         <div>
+            <h1>Libraries</h1>
             <table>
                 <tr>
                     <th>Name</th>
