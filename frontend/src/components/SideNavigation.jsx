@@ -10,6 +10,7 @@ export default function SideNavigation() {
                 <Link to="/readers">Readers</Link>
                 <Link to="/publications">Publications</Link>
                 <Link to="/literature">Literature</Link>
+                <Link to="/borrowings">Borrowings</Link>
             </Nav>
         </Sidebar>
     )

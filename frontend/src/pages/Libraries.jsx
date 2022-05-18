@@ -1,6 +1,7 @@
 import axios from "axios"
 import * as React from "react"
 import {useState} from "react";
+import {DataTable, Text} from "grommet";
 
 
 function Library(props) {
@@ -26,13 +27,27 @@ export default function Libraries(props) {
     return (
         <div>
             <h1>Libraries</h1>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Location</th>
-                </tr>
-                {libraries.map((lib) => <Library name={lib.name} location={lib.location}/>)}
-            </table>
+            <DataTable
+                border={true}
+                fill="horizontal"
+                columns={[
+                    {
+                        property: 'id',
+                        header: <Text>id</Text>,
+                        size:"small",
+                        primary: true
+                    },
+                    {
+                        property: 'location',
+                        header: <Text>Location</Text>
+                    },
+                    {
+                        property: 'name',
+                        header: <Text>Name</Text>
+                    }
+                ]}
+                data={libraries}
+            />
         </div>
     )
 }

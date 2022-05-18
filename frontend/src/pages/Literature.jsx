@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useState} from "react";
 import * as React from "react";
+import {DataTable, Text} from "grommet";
 
 export default function Literature(props) {
     const [literature, setLiterature] = useState([])
@@ -16,20 +17,36 @@ export default function Literature(props) {
         getLiterature()
     }, []);
 
-    const data = React.useMemo(() => literature, [literature])
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: 'name',
-                accessor: '',
-            }
-        ],
-        []
-    )
-
     return (
         <div>
             <h1>Literature</h1>
+
+            <DataTable
+                border={true}
+                fill="horizontal"
+                resizeable="true"
+                columns={[
+                    {
+                        property: 'id',
+                        header: <Text>id</Text>,
+                        size:"small",
+                        primary: true
+                    },
+                    {
+                        property: 'title',
+                        header: <Text>Title</Text>
+                    },
+                    {
+                        property: 'author',
+                        header: <Text>Author</Text>
+                    },
+                    {
+                        property: 'year',
+                        header: <Text>Year</Text>
+                    }
+                ]}
+                data={literature}
+            />
         </div>
     )
 }
