@@ -9,6 +9,7 @@ import ru.nsu.ccfit.citylibraries.backend.repositories.CategoryRepository;
 import ru.nsu.ccfit.citylibraries.backend.repositories.ReaderRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,11 +58,11 @@ public class ReaderService {
     }
 
     public Map<String, Object> getReaderParams(Integer readerId, Integer categoryId) {
-//        switch (categoryId) {
-//            case 1:
-//                return readerRepository.findAll()
-//        }
-        return null;
+        return switch (categoryId) {
+            case 1 -> readerRepository.getSchoolboyParams(readerId);
+            case 2 -> readerRepository.getStudentParams(readerId);
+            default -> new HashMap<>();
+        };
     }
 
     public List<Reader> getAllReaders() {

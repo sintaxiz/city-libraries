@@ -8,6 +8,7 @@ import ru.nsu.ccfit.citylibraries.backend.dto.ReaderBorrowingInfo;
 import ru.nsu.ccfit.citylibraries.backend.entities.Reader;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface ReaderRepository extends JpaRepository<Reader, Integer> {
@@ -38,4 +39,12 @@ public interface ReaderRepository extends JpaRepository<Reader, Integer> {
                     "CAST(:grade AS VARCHAR ))")
     List<Integer> getSchoolboys(@Param("school") String university,
                                 @Param("grade") String grade);
+
+    @Query(nativeQuery = true, value =
+            "SELECT university FROM student s WHERE s.reader_id = CAST(:readerId AS int)")
+    Map<String, Object> getStudentParams(Integer readerId);
+
+    @Query(nativeQuery = true, value =
+            "SELECT grade, school FROM schoolboy s WHERE s.reader_id = CAST(:readerId AS int)")
+    Map<String, Object> getSchoolboyParams(@Param("readerId") Integer readerId);
 }

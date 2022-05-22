@@ -28,7 +28,7 @@ public class ReaderController {
         return service.getAllReaders();
     }
 
-    @GetMapping(path = "/{categoryId}-{readerId}")
+    @GetMapping(path = "/{categoryId}/{readerId}")
     public Map<String, Object> getReaderParams(@PathVariable Integer readerId, @PathVariable Integer categoryId) {
         return service.getReaderParams(readerId, categoryId);
     }

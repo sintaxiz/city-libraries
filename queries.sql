@@ -50,6 +50,8 @@ $$
     language SQL;
 
 
+
+
 /* 2. указанное произведение (literature) -> список читателей */
 create or replace function find_readers_with_literature(literature varchar, begin_date timestamp default now(),
                                                         end_date timestamp default null)

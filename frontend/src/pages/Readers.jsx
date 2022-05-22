@@ -1,6 +1,7 @@
 import * as React from "react";
 import {TextInput, Button, Box, DateInput, Text, DataTable, Select, Heading} from "grommet";
 import axios from "axios";
+import ReaderParams from "../components/ReaderParams";
 
 export default function Readers(props) {
 
@@ -10,6 +11,7 @@ export default function Readers(props) {
     const [categories, setCategories] = React.useState([])
     const [selectedCategory, setSelectedCategory] = React.useState('')
     const [searchParams, setSearchParams] = React.useState(new Map())
+    const [readerParams, setReaderParams] = React.useState({})
 
     const addCategoryNameToReaders = (categories, readers) => {
         return readers
@@ -34,6 +36,35 @@ export default function Readers(props) {
                 console.log(readers)
             })
     }
+
+    function getReaderParams(reader) {
+        axios.get('http://localhost:8080/api/v1/readers/' + reader.categoryId + '/' + reader.id + '/')
+            .then(r => {
+                    let currentReaderParams = r.data
+                    readerParams[reader.id] = currentReaderParams
+                    setReaderParams(readerParams
+                    )
+                    console.log(readerParams)
+                }
+            ).catch(() => {
+            readerParams[reader.id] = {satus: "no data"}
+            setReaderParams(readerParams)
+        })
+        return (
+            <Box margin='small'>
+                <div>
+                    {readerParams[reader.id] !== undefined &&
+                        Object.keys(readerParams[reader.id])
+                            .map(key =>
+                                <ReaderParams param={key} value={readerParams[reader.id][key]}/>
+                            )}
+                </div>
+            </Box>
+
+        )
+
+    }
+
     const getAll = () => {
         axios.get('http://localhost:8080/api/v1/readers/categories')
             .then(res => {
@@ -58,7 +89,7 @@ export default function Readers(props) {
 
     function searchReadersWithParams() {
         if (selectedCategory === NONE_CATEGORY_NAME) {
-            searchParams.set("categoryId",0)
+            searchParams.set("categoryId", 0)
         } else {
             let category = categories.find((category) => {
                 return (category.name === selectedCategory)
@@ -83,7 +114,7 @@ export default function Readers(props) {
     return (
         <Box direction="column">
 
-            <Heading>Readers</Heading>
+            <h1>Readers</h1>
 
 
             <Box direction="column">
@@ -150,8 +181,8 @@ export default function Readers(props) {
             <Box>
                 <DataTable
                     border={true}
-                    rowDetails={() => {
-                        return (<Text>Test</Text>)
+                    rowDetails={(row) => {
+                        return getReaderParams(row)
                     }}
                     fill={true}
                     columns={[
