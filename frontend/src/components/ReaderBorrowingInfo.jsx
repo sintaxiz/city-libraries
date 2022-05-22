@@ -25,7 +25,7 @@ export default function ReaderBorrowingInfo() {
                 }
             }
         }
-        console.log("params for readers request: " + requestParams)
+        console.log("params for readers request: " + requestParams.params)
         axios.get('http://localhost:8080/api/v1/readers/literature',
             requestParams
         )
@@ -54,7 +54,7 @@ export default function ReaderBorrowingInfo() {
                             format="mm/dd/yyyy"
                             value={(new Date()).toISOString()}
                             onChange={({value}) => {
-                                setBorrowDate(value)
+                                setBorrowDate(value.toString())
                                 console.log("set borrowing date = " + borrowDate)
                             }}
                         />
@@ -67,7 +67,7 @@ export default function ReaderBorrowingInfo() {
                             format="mm/dd/yyyy"
                             value={(new Date()).toISOString()}
                             onChange={({value}) => {
-                                setReturnDate(value)
+                                setReturnDate(value.toString())
                                 console.log("set return date = " + returnDate)
                             }}
                         />
