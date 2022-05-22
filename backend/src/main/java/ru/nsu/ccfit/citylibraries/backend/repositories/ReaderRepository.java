@@ -18,11 +18,24 @@ public interface ReaderRepository extends JpaRepository<Reader, Integer> {
     List<ReaderBorrowingInfo> getReadersWithLiterature(String literature);
 
 
-    @Query(nativeQuery = true, value = "SELECT * from find_readers_with_literature(" +
-            "CAST(:literature AS VARCHAR)," +
-            "CAST(:borrow_date AS TIMESTAMP)," +
-            "CAST(:return_date AS TIMESTAMP))")
+    @Query(nativeQuery = true, value =
+            "SELECT * from find_readers_with_literature(" +
+                    "CAST(:literature AS VARCHAR)," +
+                    "CAST(:borrow_date AS TIMESTAMP)," +
+                    "CAST(:return_date AS TIMESTAMP))")
     List<ReaderBorrowingInfo> getReadersWithLiterature(@Param("literature") String literature,
                                                        @Param("borrow_date") String borrowDate,
                                                        @Param("return_date") String returnDate);
+
+    @Query(nativeQuery = true, value =
+            "SELECT readerId from find_students("
+                    + "CAST(:university AS VARCHAR))")
+    List<Integer> getStudents(@Param("university") String university);
+
+    @Query(nativeQuery = true, value =
+            "SELECT readerId from find_schoolboys(" +
+                    "CAST(:school AS VARCHAR)," +
+                    "CAST(:grade AS VARCHAR ))")
+    List<Integer> getSchoolboys(@Param("school") String university,
+                                @Param("grade") String grade);
 }

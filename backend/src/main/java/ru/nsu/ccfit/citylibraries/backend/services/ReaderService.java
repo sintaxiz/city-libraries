@@ -3,33 +3,68 @@ package ru.nsu.ccfit.citylibraries.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nsu.ccfit.citylibraries.backend.dto.ReaderBorrowingInfo;
-import ru.nsu.ccfit.citylibraries.backend.entities.Publication;
 import ru.nsu.ccfit.citylibraries.backend.entities.Reader;
-import ru.nsu.ccfit.citylibraries.backend.repositories.PublicationRepository;
+import ru.nsu.ccfit.citylibraries.backend.entities.ReaderCategory;
+import ru.nsu.ccfit.citylibraries.backend.repositories.CategoryRepository;
 import ru.nsu.ccfit.citylibraries.backend.repositories.ReaderRepository;
 
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReaderService {
-    private final ReaderRepository repository;
+    private final ReaderRepository readerRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ReaderService(ReaderRepository repository) {
-        this.repository = repository;
+    public ReaderService(ReaderRepository repository, CategoryRepository categoryRepository) {
+        this.readerRepository = repository;
+        this.categoryRepository = categoryRepository;
     }
 
-    public List<Reader> getReaders() {
-        return repository.findAll();
+    public List<Reader> getReadersWithParams(Integer categoryId, Map<String, String> params) {
+        if (categoryId != 1 && categoryId != 2) {
+            List<Reader> readersWithoutCategory = new ArrayList<>();
+            for (Reader r : readerRepository.findAll()) {
+                if (r.getCategoryId() == null) {
+                    readersWithoutCategory.add(r);
+                }
+            }
+            return readersWithoutCategory;
+        }
+        List<Integer> readerIds = new ArrayList<>();
+        if (categoryId == 1) {
+            readerIds = readerRepository.getSchoolboys(params.get("school"), params.get("school"));
+        }
+        if (categoryId == 2) {
+            readerIds = readerRepository.getStudents(params.get("university"));
+        }
+        return readerRepository.findAllById(readerIds);
     }
 
     public List<ReaderBorrowingInfo> getReadersWithLiterature(String literature, String borrowDate,
                                                               String returnDate) {
-        return repository.getReadersWithLiterature(literature, borrowDate, returnDate);
+        return readerRepository.getReadersWithLiterature(literature, borrowDate, returnDate);
     }
+
     public List<ReaderBorrowingInfo> getReadersWithLiterature(String literature) {
-        return repository.getReadersWithLiterature(literature);
+        return readerRepository.getReadersWithLiterature(literature);
+    }
+
+    public List<ReaderCategory> getCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public Map<String, Object> getReaderParams(Integer readerId, Integer categoryId) {
+//        switch (categoryId) {
+//            case 1:
+//                return readerRepository.findAll()
+//        }
+        return null;
+    }
+
+    public List<Reader> getAllReaders() {
+        return readerRepository.findAll();
     }
 }
