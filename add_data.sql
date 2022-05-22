@@ -39,13 +39,14 @@ insert into reader (id, category_id, name)
             (5, NULL, 'Александр Литвинов'),
             (6, 2, 'Никита Панин'));
 
-insert into schoolboy (id, school, grade)
-values (3, 'Средняя общеобразовательная школа №38', '8Д');
+insert into schoolboy (id, reader_id, school, grade)
+values (1, 3, 'Средняя общеобразовательная школа №38', '8Д'),
+       (2, 4, 'Средняя общеобразовательная школа №38', '9a');
 
-insert into student (id, university)
-values (1, 'НГУ'),
-       (2, 'НГУ'),
-       (6, 'НГТУ');
+insert into student (id, reader_id, university)
+values (1, 1, 'НГУ'),
+       (2, 2, 'НГУ'),
+       (3, 6, 'НГТУ');
 
 insert into reader_library (reader_id, library_id)
 values (1, 1),
