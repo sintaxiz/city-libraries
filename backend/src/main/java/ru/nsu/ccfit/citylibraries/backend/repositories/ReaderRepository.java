@@ -47,4 +47,12 @@ public interface ReaderRepository extends JpaRepository<Reader, Integer> {
     @Query(nativeQuery = true, value =
             "SELECT grade, school FROM schoolboy s WHERE s.reader_id = CAST(:readerId AS int)")
     Map<String, Object> getSchoolboyParams(@Param("readerId") Integer readerId);
+
+    @Query(nativeQuery = true, value =
+            "SELECT * from get_readers_who_not_attend()")
+    List<Reader> getReadersWhoNotAttend(String startDate, String endDate);
+
+    @Query(nativeQuery = true, value =
+            "SELECT * from get_readers_who_not_attend()")
+    List<Reader> getReadersWhoNotAttend();
 }

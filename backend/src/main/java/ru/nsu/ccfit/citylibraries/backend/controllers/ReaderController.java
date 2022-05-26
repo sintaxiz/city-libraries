@@ -28,6 +28,11 @@ public class ReaderController {
         return service.getAllReaders();
     }
 
+    @GetMapping(path = "/{readerId}")
+    public Optional<Reader> getReader(@PathVariable Integer readerId) {
+        return service.getReader(readerId);
+    }
+
     @GetMapping(path = "/{categoryId}/{readerId}")
     public Map<String, Object> getReaderParams(@PathVariable Integer readerId, @PathVariable Integer categoryId) {
         return service.getReaderParams(readerId, categoryId);
@@ -52,5 +57,14 @@ public class ReaderController {
     @GetMapping(path = "/categories")
     public List<ReaderCategory> getCategories() {
         return service.getCategories();
+    }
+
+    @GetMapping(path="/not-attend")
+    public List<Reader> getReadersWhoNotAttend
+            (@RequestParam(name = "startDate") Optional<String> startDate,
+             @RequestParam(name = "finishDate") Optional<String> finishDate) {
+        return startDate.isPresent() && finishDate.isPresent() ?
+                service.getReadersWhoNotAttend(startDate.get(), finishDate.get()) :
+                service.getReadersWhoNotAttend();
     }
 }

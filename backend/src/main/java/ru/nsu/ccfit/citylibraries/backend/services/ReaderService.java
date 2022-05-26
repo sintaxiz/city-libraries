@@ -8,10 +8,7 @@ import ru.nsu.ccfit.citylibraries.backend.entities.ReaderCategory;
 import ru.nsu.ccfit.citylibraries.backend.repositories.CategoryRepository;
 import ru.nsu.ccfit.citylibraries.backend.repositories.ReaderRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ReaderService {
@@ -67,5 +64,17 @@ public class ReaderService {
 
     public List<Reader> getAllReaders() {
         return readerRepository.findAll();
+    }
+
+    public Optional<Reader> getReader(Integer readerId) {
+        return readerRepository.findById(readerId);
+    }
+
+    public List<Reader> getReadersWhoNotAttend(String startDate, String endDate) {
+        return readerRepository.getReadersWhoNotAttend(startDate, endDate);
+    }
+
+    public List<Reader> getReadersWhoNotAttend() {
+        return readerRepository.getReadersWhoNotAttend();
     }
 }

@@ -2,11 +2,13 @@ package ru.nsu.ccfit.citylibraries.backend.dto;
 
 import java.time.LocalDate;
 
-public interface ReaderBorrowingInfo {
-    String getReaderName();
+public interface LibraryPublicationInfo {
+    Integer getRoomId();
+    Integer getBookshelfId();
     String getPublicationName();
-    String getLibrary();
+    String getAuthor();
+    String getYear();
+    String getReader();
     LocalDate getBorrowingDate();
     LocalDate getReturnDate();
-    Integer getReturnTerm();
 }
