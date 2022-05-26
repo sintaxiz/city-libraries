@@ -1,16 +1,27 @@
-import {Box, Button, DataTable, DateInput, Text, TextInput} from "grommet";
+import {Box, Button, CheckBox, DataTable, DateInput, RadioButtonGroup, Text, TextInput} from "grommet";
 import * as React from "react";
 import axios from "axios";
+import BorrowingPeriod from "./BorrowingPeriod";
 
 export default function ReaderBorrowingInfo() {
-    const [literature, setLiterature] = React.useState('');
+    const [literature, setLiterature] = React.useState([]);
+    const [publication, setPublication] = React.useState([]);
     const [borrowDate, setBorrowDate] = React.useState('');
     const [returnDate, setReturnDate] = React.useState('');
+    const [isOnlyExpired, setIsOnlyExpired] = React.useState(false)
+    const [registredValue, setRegistredValue] = React.useState(false)
 
-    const [readers, setReaders] = React.useState([])
+    const [borrowings, setBorrowings] = React.useState([])
 
     const searchReadersWithLiterature = () => {
-        console.log("search readers with literature = " + literature)
+        if (isOnlyExpired) {
+            axios.get("http://localhost:8080/api/v1/borrowings/expired")
+                .then(r => {
+                    console.log(r.data)
+                    setBorrowings(r.data)
+                })
+            return
+        }
         let requestParams = {}
         if (borrowDate === '' && returnDate === '') {
             requestParams = {
@@ -31,7 +42,18 @@ export default function ReaderBorrowingInfo() {
         )
             .then(res => {
                 console.log(res.data)
-                setReaders(res.data)
+                setBorrowings(res.data)
+            })
+    }
+    React.useEffect(() => {
+        loadBorrowings()
+    }, []);
+
+    const loadBorrowings = () => {
+        axios.get('http://localhost:8080/api/v1/borrowings')
+            .then(res => {
+                console.log(res.data)
+                setBorrowings(res.data)
             })
     }
 
@@ -46,36 +68,32 @@ export default function ReaderBorrowingInfo() {
                         value={literature}
                         onChange={event => setLiterature(event.target.value)}
                     />
-                    <Box direction="row">
-                        <Text textAlign="start">
-                            borrow date:
+                    <TextInput
+                        placeholder="publication name"
+                        value={publication}
+                        onChange={event => setPublication(event.target.value)}
+                    />
+                   <BorrowingPeriod setBorrow={setBorrowDate} setReturn={{setReturnDate}}/>
+                    <Box>
+                        <Text>
+                            Search in the library where the reader was registered?
                         </Text>
-                        <DateInput
-                            format="mm/dd/yyyy"
-                            value={(new Date()).toISOString()}
-                            onChange={({value}) => {
-                                setBorrowDate(value.toString())
-                                console.log("set borrowing date = " + borrowDate)
-                            }}
+                        <RadioButtonGroup
+                            name="doc"
+                            options={['no matter', 'yes', 'no']}
+                            value={registredValue}
+                            onChange={(event) => {setRegistredValue(event.target.value)}}
                         />
-                    </Box>
-                    <Box direction="row">
-                        <Text textAlign="start">
-                            return date:
-                        </Text>
-                        <DateInput
-                            format="mm/dd/yyyy"
-                            value={(new Date()).toISOString()}
-                            onChange={({value}) => {
-                                setReturnDate(value.toString())
-                                console.log("set return date = " + returnDate)
-                            }}
+                        <CheckBox
+                            checked={isOnlyExpired}
+                            label="Find only expired"
+                            onChange={(event) => setIsOnlyExpired(event.target.checked)}
                         />
                     </Box>
                 </Box>
                 <Box pad="small">
                     <Button primary
-                            label="search readers"
+                            label="search"
                             onClick={searchReadersWithLiterature}/>
                 </Box>
             </Box>
@@ -101,9 +119,17 @@ export default function ReaderBorrowingInfo() {
                     {
                         property: 'borrowingDate',
                         header: <Text>Borrowing date</Text>,
+                    },
+                    {
+                        property: 'returnDate',
+                        header: <Text>Return date</Text>,
+                    },
+                    {
+                        property: 'returnTerm',
+                        header: <Text>Return term</Text>,
                     }
                 ]}
-                data={readers}
+                data={borrowings}
             />
         </div>
 

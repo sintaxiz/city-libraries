@@ -1,5 +1,5 @@
 import * as React from "react";
-import {TextInput, Button, Box, DateInput, Text, DataTable, Select, Heading} from "grommet";
+import {TextInput, Button, Box, DateInput, Text, DataTable, Select, Heading, CheckBox} from "grommet";
 import axios from "axios";
 import ReaderParams from "../components/ReaderParams";
 
@@ -12,6 +12,10 @@ export default function Readers(props) {
     const [selectedCategory, setSelectedCategory] = React.useState('')
     const [searchParams, setSearchParams] = React.useState(new Map())
     const [readerParams, setReaderParams] = React.useState({})
+
+    const [isDidntAttend, setIsDidntAttend] = React.useState(false)
+    const [startAttendDate, setStartAttendDate] = React.useState()
+    const [endAttendDate, setEndAttendDate] = React.useState()
 
     const addCategoryNameToReaders = (categories, readers) => {
         return readers
@@ -51,8 +55,9 @@ export default function Readers(props) {
             setReaderParams(readerParams)
         })
         return (
-            <Box margin='small'>
+            <Box margin='small' background="light-2">
                 <div>
+                    <h3>Reader params:</h3>
                     {readerParams[reader.id] !== undefined &&
                         Object.keys(readerParams[reader.id])
                             .map(key =>
@@ -87,7 +92,16 @@ export default function Readers(props) {
         return catForSelect
     }
 
-    function searchReadersWithParams() {
+    function searchReaders() {
+        if (isDidntAttend) {
+            axios.get('http://localhost:8080/api/v1/readers/not-attend')
+                .then(r => setReaders(r.data))
+            return
+        }
+        if (undefined === selectedCategory) {
+            getAll();
+            return;
+        }
         if (selectedCategory === NONE_CATEGORY_NAME) {
             searchParams.set("categoryId", 0)
         } else {
@@ -118,6 +132,30 @@ export default function Readers(props) {
 
 
             <Box direction="column">
+                <Box pad="small" direction="row">
+                    <CheckBox checked={isDidntAttend}
+                              label="didn't attend from:"
+                              onChange={(event) => setIsDidntAttend(event.target.checked)}
+                                  />
+                    <DateInput
+                        format="mm/dd/yyyy"
+                        value={startAttendDate}
+                        onChange={({value}) => {
+                            props.setBorrow(value.toString())
+                            setStartAttendDate(value)
+                        }}
+                    />
+                    <Text margin="small">to</Text>
+                    <DateInput
+                        format="mm/dd/yyyy"
+                        value={endAttendDate}
+                        onChange={({value}) => {
+                            props.setBorrow(value.toString())
+                            setEndAttendDate(value)
+                        }}
+                    />
+                </Box>
+
                 <Box pad="small" direction="row">
                     <Text margin="small">reader category:</Text>
                     <Select options={getCategoriesNameForSelect()}
@@ -173,7 +211,7 @@ export default function Readers(props) {
 
                 <Box pad="small" direction="row">
                     <Button label="search" onClick={() => {
-                        searchReadersWithParams()
+                        searchReaders()
                     }}/>
                 </Box>
             </Box>

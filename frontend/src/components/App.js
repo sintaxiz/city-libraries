@@ -8,6 +8,7 @@ import SideNavigation from "./SideNavigation";
 
 import { Grommet } from 'grommet';
 import Borrowings from "../pages/Borrowings";
+import Workers from "../pages/Workers";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/publications" element={<Publications/>}/>
                     <Route path="/literature" element={<Literature/>}/>
                     <Route path="/borrowings" element={<Borrowings/>}/>
+                    <Route path="/workers" element={<Workers/>}/>
                 </Routes>
 
             </BrowserRouter>
